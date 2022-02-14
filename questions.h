@@ -18,9 +18,9 @@
 
 // List of 3 categories as array of strings
 static char categories[NUM_CATEGORIES][MAX_LEN] = {
-    "programming", 
-    "algorithms", 
-    "databases"
+    "2 WORDS TO COMPLETE THE PHRASE", 
+    "TV, STREAMED", 
+    "THE ELEMENTS"
 };
 
 // Questions struct for each question
