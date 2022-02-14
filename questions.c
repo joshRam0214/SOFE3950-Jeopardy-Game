@@ -89,24 +89,51 @@ void display_categories(void)
 {
     // print categories and dollar values for each unanswered question in questions array
     for (int x = 0; x < 3; x++) {
-
+        printf("|  %s  ", categories[x]);
     }
-        for (int y = 0; y < 12; y++) {
-            printf("$ %d", question[y].value)
+
+    for (int y = 0; y < 12; y++) {
+        if (questions[y] == false) {
+            printf("|  $%d", questions[y].value)
         }
+        else {
+            printf("|    ");
+        }
+
+        if ((i + 1) % 3 == 0) {
+            printf("\n");
+        }
+    }
     
 }
 
 // Displays the question for the category and dollar value
 void display_question(char *category, int value)
 {
-
+    for (int i = 0; i < 12; i++) {
+        if ((questions[i].category == category) && (questions[i].value == value)) {
+            printf("Question \"%s for $%d\":\n", category, value);
+            printf("\t%s\n", questions[i].question);
+        }
+    }
 }
 
 // Returns true if the answer is correct for the question for that category and dollar value
 bool valid_answer(char *category, int value, char *answer)
 {
-    // Look into string comparison functions
+    int q_num = 0;
+
+    for (int i = 0; i < 12; i++) {
+        if ((questions[i].category == category) && (questions[i].value == value)) {
+            q_num = i;
+        }
+    }
+
+    // Look into string comparison functions, sets question answered to true
+    if (strcmp(answer, questions[q_num].answer)) {
+        questions[q_num].answered = true;
+        return true;
+    }
     return false;
 }
 
@@ -114,5 +141,12 @@ bool valid_answer(char *category, int value, char *answer)
 bool already_answered(char *category, int value)
 {
     // lookup the question and see if it's already been marked as answered
+    for (int i = 0; i < 12; i++) {
+        if ((questions[i].category == category) && (questions[i].value == value)) {
+            if (questions[i].answered == true) {
+                return true;
+            }
+        }
+    }
     return false;
 }
