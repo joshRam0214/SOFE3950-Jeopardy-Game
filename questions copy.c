@@ -82,6 +82,25 @@ void initialize_game(void)
     strcpy(questions[11].question, "This element makes up about 25% of the mass in your average star");
     strcpy(questions[11].answer, "helium");
     strcpy(questions[11].category, categories[2]);
+    for (int x = 0; x < 3; x++){
+        printf("------------------------------------\n");
+        printf("Catagory: %s \n", categories[x]);
+        for (int y = 0; y < 12; y++){
+            if (strcmp(categories[x],questions[y].category)){
+                printf("Question: %s \n", questions[y].question);
+                printf("Value: %d ", questions[y].value);
+                printf("\n");
+            }
+            
+        }
+    }
+    // for(int x = 0; x < 12; x++){
+    //     printf("Category: %s ", questions[x].category);
+    //     printf("Question: %s ", questions[x].question);
+    //     printf("Value: %d ", questions[x].value);
+    //     printf("\n");
+    // }
+
 }
 
 // Displays each of the remaining categories and question dollar values that have not been answered
@@ -89,15 +108,15 @@ void display_categories(void)
 {
     // print categories and dollar values for each unanswered question in questions array
     for (int x = 0; x < 3; x++) {
-        printf("|\t%s  ", categories[x]);
+        printf("|  %s  ", categories[x]);
     }
-    printf("\n");
+
     for (int y = 0; y < 12; y++) {
         if (questions[y].answered == false) {
-            printf("|\t$%d", questions[y].value);
+            printf("|  $%d", questions[y].value);
         }
         else {
-            printf("|\t");
+            printf("|    ");
         }
 
         if ((y + 1) % 3 == 0) {
@@ -111,7 +130,11 @@ void display_categories(void)
 void display_question(char *category, int value)
 {
     for (int i = 0; i < 12; i++) {
-        if (strcmp(questions[i].category, category) == 0 && questions[i].value == value) {
+        // if ((questions[i].category == category) && (questions[i].value == value)) {
+        //     printf("Question \"%s for $%d\":\n", category, value);
+        //     printf("\t%s\n", questions[i].question);
+        // }
+        if (strcmp(questions[i].category, category) && questions[i].value == value) {
             printf("Question \"%s for $%d\":\n", category, value);
             printf("\t%s\n", questions[i].question);        
         }
@@ -124,13 +147,13 @@ bool valid_answer(char *category, int value, char *answer)
     int q_num = 0;
 
     for (int i = 0; i < 12; i++) {
-        if (strcmp(questions[i].category, category) == 0 && (questions[i].value == value)) {
+        if ((questions[i].category == category) && (questions[i].value == value)) {
             q_num = i;
         }
     }
 
     // Look into string comparison functions, sets question answered to true
-    if (strcmp(answer, questions[q_num].answer) == 0) {
+    if (strcmp(answer, questions[q_num].answer)) {
         questions[q_num].answered = true;
         return true;
     }
@@ -142,7 +165,7 @@ bool already_answered(char *category, int value)
 {
     // lookup the question and see if it's already been marked as answered
     for (int i = 0; i < 12; i++) {
-        if (strcmp(questions[i].category, category) == 0 && (questions[i].value == value)) {
+        if (strcmp(questions[i].category, category) && (questions[i].value == value)) {
             if (questions[i].answered == true) {
                 return true;
             }
@@ -151,14 +174,22 @@ bool already_answered(char *category, int value)
     return false;
 }
 
-int ques_num(char *category, int value) {
+void track_answered(char *category, int value) {
+	for(int i = 0; i < 12; i++) 
+		if(questions[i].value == value && strcmp(questions[i].category, category) == 0)
+			questions[i].answered = true;
+}
+
+int get_question_number(char *category, int value) {
 	for(int i = 0; i < 12; i++)
 		if(strcmp(questions[i].category, category) == 0 && questions[i].value == value)
 			return i;
+
+
 	return -1;
 }
 
-bool boardComplete() {
+bool answered_status() {
 	for(int i = 0; i < 12; i++)
 		if(questions[i].answered == false)
 			return false;
